@@ -10,9 +10,10 @@ const text =
     "Shit and also piss :)";
 
 
-function Welcome() {
+function Welcome(props) {
 
     const [rotation, setRotation] = useState([0, 0, 0, 0]);
+    const [coolRotation, setCoolRotation] = useState([0, 0, 0, 0]);
     const [opts, setOpts] = useState({
         font: "Philosopher",
         fontSize: 12,
@@ -31,7 +32,15 @@ function Welcome() {
             ((e.clientX / e.target.offsetWidth - 1) * -Math.PI) / 8,
             0
         ]);
+
+        setCoolRotation([
+            ((e.clientY / e.target.offsetHeight - 1) * -Math.PI) * 8,
+            ((e.clientX / e.target.offsetWidth - 1) * -Math.PI) * 8,
+            0
+        ]);
+
     };
+
 
     return (
         <div>
@@ -48,16 +57,36 @@ function Welcome() {
                 onMouseMove={onMouseMove}
             >
 
+                <ambientLight
+                    intensity={.3}
+
+                />
+
                 <text
-                    position-z={4}
+                    position-z={2}
                     rotation={rotation}
                     text={text}
                     // font={'Arial'}
                     anchorX="center"
                     anchorY="middle"
-                //     color="0xff0000"
-                //    opacity="0xff0000"
+                    color="red"
+                //    fillOpacity={0}
                 />
+
+                <mesh
+                {...props}
+                        // ref={mesh}
+                        scale={true ? [1.5, 1.5, 1.5] : [1, 1, 1]}
+                        // onClick={(e) => setActive(!active)}
+                        // onPointerOver={(e) => setHover(true)}
+                        // onPointerOut={(e) => setHover(false)}
+                        rotation={coolRotation}
+                        >
+                        <boxBufferGeometry args={[1, .7, 1]} />
+                        
+                        <meshStandardMaterial
+                        color={"purple"}></meshStandardMaterial>
+                    </mesh>
 
 
                 <text
@@ -68,6 +97,9 @@ function Welcome() {
                     // font={'Arial'}
                     anchorX="center"
                     anchorY="middle"
+                    fillOpacity={1}
+                    strokeOpacity={1}
+                    // backgroundColor="white"
                    
                 >
                     {opts.materialType === "MeshPhongMaterial" ? (
